@@ -8,6 +8,7 @@ function ContextProvider(props) {
 
   const url =
     "https://raw.githubusercontent.com/bobziroll/scrimba-react-bootcamp-images/master/images.json";
+
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
