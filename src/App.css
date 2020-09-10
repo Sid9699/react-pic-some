@@ -143,3 +143,36 @@ a:hover {
 a:active {
   color: var(--light-blue);
 }
+
+.search-bar{
+  text-align: center;
+}
+
+.search-input{
+  height: 25px;
+  width: 200px;
+  font-size: 1.25rem;
+  border-radius: 5px;
+  margin-right: .5em;
+  border: 2px solid #f47b6e;
+}
+
+.search-input:focus{
+  outline: none;
+}
+
+.search-button{
+  border: 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: whitesmoke;
+  background-color: #f47b6e;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 1em;
+  cursor: pointer;
+}
+
+.search-button:focus{
+  outline: none;
+}

@@ -7,13 +7,15 @@ function ContextProvider(props) {
   const [allPhotos, setAllPhotos] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const apiRoot = "https://api.unsplash.com"
-  const [url,setUrl] = useState(`${apiRoot}/photos/random?client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=40`);
+  const [url,setUrl] = useState(`${apiRoot}/photos/random?client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`);
 
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setAllPhotos(data)
+        url.slice(25,30) === 'photo'?
+          setAllPhotos(data):
+          setAllPhotos(data.results)
         console.log(data)
       })
       .catch((e) => console.log(e));
@@ -47,7 +49,11 @@ function ContextProvider(props) {
   }
 
   function setSearchQuery(query){
-    const queryUrl = `${apiRoot}/search/photos?page=1&query=${query}&client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`;
+    let queryUrl
+
+    query === ''? 
+      queryUrl = `${apiRoot}/photos/random?client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=40`:
+      queryUrl = `${apiRoot}/search/photos?page=1&per_page=30&query=${query}&client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`;
     setUrl(queryUrl)
   }
 
