@@ -1,24 +1,28 @@
-import React from "react";
-import Header from "./components/Header";
-import Cart from "./pages/Cart";
-import Photos from "./pages/Photos";
-import { Switch, Route } from "react-router-dom";
+import React,{useState,useEffect} from "react";
+import Home from "./components/Home"
+import fire from "./config/fire"
+import SignIn from "./components/login/SignIn"
+
 import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          <Photos />
-        </Route>
-        <Route path="/cart">
-          <Cart />
-        </Route>
-      </Switch>
-    </div>
-  );
+function App() { 
+  const [user,setUser] = useState({});
+
+  function authListener(){
+      fire.auth().onAuthStateChanged(user=>{
+          if(user){
+              setUser(user);
+          }else{
+              setUser(null);
+          }
+      });
+  }
+
+  useEffect(()=>{
+      authListener();
+  },[]);
+
+  return <>{user?<Home/>:<SignIn/>}</>;
 }
 
 export default App;

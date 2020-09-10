@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../Context";
+import fire from "../config/fire";
 import "../App.css";
 
 function Header(props) {
@@ -10,6 +11,7 @@ function Header(props) {
 
   return (
     <header>
+      <a href='#' onClick={()=>fire.auth().signOut()} >Log Out</a>
       <Link to="/">
         <h2>Pic Some</h2>
       </Link>
