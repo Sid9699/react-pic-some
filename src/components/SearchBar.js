@@ -1,5 +1,6 @@
 import React,{useState,useContext} from 'react';
 import {Context} from "../Context";
+import "../App.css"
 
 function SearchBar(props){
 
