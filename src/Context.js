@@ -21,6 +21,16 @@ function ContextProvider(props) {
       .catch((e) => console.log(e));
   }, [url]);
 
+  useEffect(()=>{
+    if(fire.auth().currentUser === null){
+
+    }else{
+      fire.firestore().collection('Cart').doc(fire.auth().currentUser.uid).set({
+        cartItems
+      })
+    }
+  },[cartItems])
+
   function toggleFavorite(id) {
     const updatedPhotos = allPhotos.map((photo) =>
       id === photo.id ? { ...photo, isFavorite: !photo.isFavorite } : photo
@@ -30,18 +40,13 @@ function ContextProvider(props) {
 
   function addToCart(img) {
     setCartItems((prevCartItems) => [...prevCartItems, img]);
-    fire.firestore().collection('Cart').doc(fire.auth().currentUser.uid).set({
-      cartItems
-    });
+    
   }
 
   function removeFromCart(id) {
     setCartItems((prevCartItems) =>
       prevCartItems.filter((item) => item.id !== id)
     );
-    fire.firestore().collection('Cart').doc(fire.auth().currentUser.uid).set({
-      cartItems
-    });
   }
 
   function emptyCart() {
@@ -49,11 +54,7 @@ function ContextProvider(props) {
   }
 
   function setSearchQuery(query){
-    let queryUrl
-
-    query === ''? 
-      queryUrl = `${apiRoot}/photos/random?client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=40`:
-      queryUrl = `${apiRoot}/search/photos?page=1&per_page=30&query=${query}&client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`;
+    const queryUrl = `${apiRoot}/search/photos?page=1&per_page=30&query=${query}&client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`;
     setUrl(queryUrl)
   }
 
@@ -67,6 +68,7 @@ function ContextProvider(props) {
         removeFromCart,
         emptyCart,
         setSearchQuery,
+        setUrl,
       }}
     >
       {props.children}
