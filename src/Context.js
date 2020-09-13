@@ -8,6 +8,7 @@ function ContextProvider(props) {
   const [cartItems, setCartItems] = useState([]);
   const apiRoot = "https://api.unsplash.com"
   const [url,setUrl] = useState(`${apiRoot}/photos/random?client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`);
+  const [favouriteItems, setFavouriteItems] = useState([]);
 
   useEffect(() => {
     fetch(url)
@@ -16,7 +17,6 @@ function ContextProvider(props) {
         url.slice(25,30) === 'photo'?
           setAllPhotos(data):
           setAllPhotos(data.results)
-        console.log(data)
       })
       .catch((e) => console.log(e));
   }, [url]);
@@ -29,7 +29,33 @@ function ContextProvider(props) {
         cartItems
       })
     }
-  },[cartItems])
+  },[cartItems]);
+
+  useEffect(()=>{
+    if(fire.auth().currentUser === null){
+
+    }else{
+      fire.firestore().collection('Favourite').doc(fire.auth().currentUser.uid).set({
+        favouriteItems
+      })
+    }
+  },[favouriteItems]);
+
+  useEffect(()=>{
+    
+    setTimeout(()=>{
+      fire.firestore().collection('Cart').doc(fire.auth().currentUser.uid).get()
+      .then(doc=>{
+        setCartItems(doc.data().cartItems)
+      });
+
+      fire.firestore().collection('Favourite').doc(fire.auth().currentUser.uid).get()
+      .then(doc=>{
+        setFavouriteItems(doc.data().favouriteItems)
+      });
+    },2000)
+    
+  },[])
 
   function toggleFavorite(id) {
     const updatedPhotos = allPhotos.map((photo) =>
@@ -53,6 +79,14 @@ function ContextProvider(props) {
     setCartItems([]);
   }
 
+  function addToFav(img){
+    setFavouriteItems(prevFavItems => [...prevFavItems,img]);
+  }
+
+  function removeFromFav(id){
+    setFavouriteItems(prevFavItems=> prevFavItems.filter(item => item.id !== id))
+  }
+
   function setSearchQuery(query){
     const queryUrl = `${apiRoot}/search/photos?page=1&per_page=30&query=${query}&client_id=5p1qlIpqKzXF62cVuY5H--PjwrGPDNM3cuFYnwfpY98&count=30`;
     setUrl(queryUrl)
@@ -69,6 +103,9 @@ function ContextProvider(props) {
         emptyCart,
         setSearchQuery,
         setUrl,
+        favouriteItems,
+        addToFav,
+        removeFromFav,
       }}
     >
       {props.children}
