@@ -53,7 +53,7 @@ function ContextProvider(props) {
       .then(doc=>{
         setFavouriteItems(doc.data().favouriteItems)
       });
-    },2000)
+    },3000)
     
   },[])
 
