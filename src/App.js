@@ -1,28 +1,15 @@
-import React,{useState,useEffect} from "react";
-import Home from "./components/Home"
-import fire from "./config/fire"
-import SignIn from "./components/login/SignIn"
+import React from "react";
+import Home from "./components/Home";
+import SignIn from "./components/login/SignIn";
 
 import "./App.css";
+import { useContext } from "react";
+import { Context } from "./Context";
 
-function App() { 
-  const [user,setUser] = useState({});
+function App() {
+  const { user } = useContext(Context);
 
-  function authListener(){
-      fire.auth().onAuthStateChanged(user=>{
-          if(user){
-              setUser(user);
-          }else{
-              setUser(null);
-          }
-      });
-  }
-
-  useEffect(()=>{
-      authListener();
-  },[]);
-
-  return <>{user?<Home/>:<SignIn/>}</>;
+  return <>{user ? <Home /> : <SignIn />}</>;
 }
 
 export default App;

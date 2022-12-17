@@ -10,7 +10,7 @@ function CartItem({ item }) {
         onClick={() => removeFromCart(item.id)}
         className="ri-delete-bin-line"
       ></i>
-      <img src={item.urls.small} width="130px" />
+      <img src={item.urls.small} width="130px" alt="unsplash_image" />
       <p>$5.99</p>
     </div>
   );
